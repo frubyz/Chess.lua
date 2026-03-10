@@ -15,46 +15,27 @@ function love.load()
 
     Chessman = {}
     Chessman.texture = {}
-    Chessman.tileX = {}
-    Chessman.tileY = {}
+    Chessman.b = {}
+    Chessman.w = {}
     
     Chessman.texture.bp = love.graphics.newImage("Textures/Chessman/bp.png")
-    Chessman.tileX.bp = {1, 2, 3, 4, 5, 6, 7, 8}
-    Chessman.tileY.bp = {2, 2, 2, 2, 2, 2, 2 ,2}
     Chessman.texture.br = love.graphics.newImage("Textures/Chessman/br.png")
-    Chessman.tileX.br = {1, 8}
-    Chessman.tileY.br = {1, 1}
     Chessman.texture.bn = love.graphics.newImage("Textures/Chessman/bn.png")
-    Chessman.tileX.bn = {2, 7}
-    Chessman.tileY.bn = {1, 1}
     Chessman.texture.bb = love.graphics.newImage("Textures/Chessman/bb.png")
-    Chessman.tileX.bb = {3, 6}
-    Chessman.tileY.bb = {1, 1}
     Chessman.texture.bk = love.graphics.newImage("Textures/Chessman/bk.png")
-    Chessman.tileX.bk = 5
-    Chessman.tileY.bk = 1
     Chessman.texture.bq = love.graphics.newImage("Textures/Chessman/bq.png")
-    Chessman.tileX.bq = 4
-    Chessman.tileY.bq = 1
 
     Chessman.texture.wp = love.graphics.newImage("Textures/Chessman/wp.png")
-    Chessman.tileX.wp = {1, 2, 3, 4, 5, 6, 7, 8}
-    Chessman.tileY.wp = {7, 7, 7, 7, 7, 7, 7 ,7}
     Chessman.texture.wr = love.graphics.newImage("Textures/Chessman/wr.png")
-    Chessman.tileX.wr = {1, 8}
-    Chessman.tileY.wr = {8, 8}
     Chessman.texture.wn = love.graphics.newImage("Textures/Chessman/wn.png")
-    Chessman.tileX.wn = {2, 7}
-    Chessman.tileY.wn = {8, 8}
     Chessman.texture.wb = love.graphics.newImage("Textures/Chessman/wb.png")
-    Chessman.tileX.wb= {3, 6}
-    Chessman.tileY.wb = {8, 8}
     Chessman.texture.wk = love.graphics.newImage("Textures/Chessman/wk.png")
-    Chessman.tileX.wk = 5
-    Chessman.tileY.wk = 8
     Chessman.texture.wq = love.graphics.newImage("Textures/Chessman/wq.png")
-    Chessman.tileX.wq = 4
-    Chessman.tileY.wq = 8
+
+    Chessman.b.coords = {{"K", 5, 1}, {"Q", 4, 1}, {"R", 1, 1}, {"R", 8, 1}, {"N", 2, 1}, {"N", 7, 1}, {"B", 3, 1}, {"B", 6, 1},
+                        {"P", 1, 2}, {"P", 2, 2}, {"P", 3, 2}, {"P", 4, 2}, {"P", 5, 2}, {"P", 6, 2}, {"P", 7, 2}, {"P", 8, 2}}
+    Chessman.w.coords = {{"K", 5, 8}, {"Q", 4, 8}, {"R", 1, 8}, {"R", 8, 8}, {"N", 2, 8}, {"N", 7, 8}, {"B", 3, 8}, {"B", 6, 8},
+                        {"P", 1, 7}, {"P", 2, 7}, {"P", 3, 7}, {"P", 4, 7}, {"P", 5, 7}, {"P", 6, 7}, {"P", 7, 7}, {"P", 8, 7}}
 end
 
 function love.update(dt)
@@ -67,10 +48,10 @@ function love.update(dt)
 end
 
 function love.draw()
-    for i = 0, 9, 1 do
-        for j = 0, 9, 1 do
+    for i = 1, 10, 1 do
+        for j = 1, 10, 1 do
             love.graphics.setColor(Tiles.color.bg)
-            love.graphics.rectangle("fill", Tiles.posX + i * Tiles.sizeX, Tiles.posY + j * Tiles.sizeY, Tiles.sizeX, Tiles.sizeY)
+            love.graphics.rectangle("fill", Tiles.posX + (i - 1) * Tiles.sizeX, Tiles.posY + (j - 1) * Tiles.sizeY, Tiles.sizeX, Tiles.sizeY)
         end
     end
     for i = 1, 8, 1 do
@@ -83,33 +64,36 @@ function love.draw()
             love.graphics.rectangle("fill", Tiles.posX + i * Tiles.sizeX, Tiles.posY + j * Tiles.sizeY, Tiles.sizeX, Tiles.sizeY)
         end
     end
-    for i = 1, 8, 1 do
-        love.graphics.draw(Chessman.texture.bp, Chessman.tileX.bp[i] * Tiles.sizeX, Chessman.tileY.bp[i] * Tiles.sizeY)
+
+    for i = 1, 16, 1 do
+        if Chessman.b.coords[i][1] == "K" then
+            love.graphics.draw(Chessman.texture.bk, Chessman.b.coords[i][2] * Tiles.sizeX, Chessman.b.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.b.coords[i][1] == "Q" then
+            love.graphics.draw(Chessman.texture.bq, Chessman.b.coords[i][2] * Tiles.sizeX, Chessman.b.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.b.coords[i][1] == "R" then
+            love.graphics.draw(Chessman.texture.br, Chessman.b.coords[i][2] * Tiles.sizeX, Chessman.b.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.b.coords[i][1] == "N" then
+            love.graphics.draw(Chessman.texture.bn, Chessman.b.coords[i][2] * Tiles.sizeX, Chessman.b.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.b.coords[i][1] == "B" then
+            love.graphics.draw(Chessman.texture.bb, Chessman.b.coords[i][2] * Tiles.sizeX, Chessman.b.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.b.coords[i][1] == "P" then
+            love.graphics.draw(Chessman.texture.bp, Chessman.b.coords[i][2] * Tiles.sizeX, Chessman.b.coords[i][3] * Tiles.sizeY)
+        end
     end
-    for i = 1, 2, 1 do
-        love.graphics.draw(Chessman.texture.br, Chessman.tileX.br[i] * Tiles.sizeX, Chessman.tileY.br[i] * Tiles.sizeY)
+
+    for i = 1, 16, 1 do
+        if Chessman.w.coords[i][1] == "K" then
+            love.graphics.draw(Chessman.texture.wk, Chessman.w.coords[i][2] * Tiles.sizeX, Chessman.w.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.w.coords[i][1] == "Q" then
+            love.graphics.draw(Chessman.texture.wq, Chessman.w.coords[i][2] * Tiles.sizeX, Chessman.w.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.w.coords[i][1] == "R" then
+            love.graphics.draw(Chessman.texture.wr, Chessman.w.coords[i][2] * Tiles.sizeX, Chessman.w.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.w.coords[i][1] == "N" then
+            love.graphics.draw(Chessman.texture.wn, Chessman.w.coords[i][2] * Tiles.sizeX, Chessman.w.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.w.coords[i][1] == "B" then
+            love.graphics.draw(Chessman.texture.wb, Chessman.w.coords[i][2] * Tiles.sizeX, Chessman.w.coords[i][3] * Tiles.sizeY)
+        elseif Chessman.w.coords[i][1] == "P" then
+            love.graphics.draw(Chessman.texture.wp, Chessman.w.coords[i][2] * Tiles.sizeX, Chessman.w.coords[i][3] * Tiles.sizeY)
+        end
     end
-    for i = 1, 2, 1 do
-        love.graphics.draw(Chessman.texture.bn, Chessman.tileX.bn[i] * Tiles.sizeX, Chessman.tileY.bn[i] * Tiles.sizeY)
-    end
-    for i = 1, 2, 1 do
-        love.graphics.draw(Chessman.texture.bb, Chessman.tileX.bb[i] * Tiles.sizeX, Chessman.tileY.bb[i] * Tiles.sizeY)
-    end
-    love.graphics.draw(Chessman.texture.bk, Chessman.tileX.bk * Tiles.sizeX, Chessman.tileY.bk * Tiles.sizeY)
-    love.graphics.draw(Chessman.texture.bq, Chessman.tileX.bq * Tiles.sizeX, Chessman.tileY.bq * Tiles.sizeY)
-    
-    for i = 1, 8, 1 do
-        love.graphics.draw(Chessman.texture.wp, Chessman.tileX.wp[i] * Tiles.sizeX, Chessman.tileY.wp[i] * Tiles.sizeY)
-    end
-    for i = 1, 2, 1 do
-        love.graphics.draw(Chessman.texture.wr, Chessman.tileX.wr[i] * Tiles.sizeX, Chessman.tileY.wr[i] * Tiles.sizeY)
-    end
-    for i = 1, 2, 1 do
-        love.graphics.draw(Chessman.texture.wn, Chessman.tileX.wn[i] * Tiles.sizeX, Chessman.tileY.wn[i] * Tiles.sizeY)
-    end
-    for i = 1, 2, 1 do
-        love.graphics.draw(Chessman.texture.wb, Chessman.tileX.wb[i] * Tiles.sizeX, Chessman.tileY.wb[i] * Tiles.sizeY)
-    end
-    love.graphics.draw(Chessman.texture.wk, Chessman.tileX.wk * Tiles.sizeX, Chessman.tileY.wk * Tiles.sizeY)
-    love.graphics.draw(Chessman.texture.wq, Chessman.tileX.wq * Tiles.sizeX, Chessman.tileY.wq * Tiles.sizeY)
 end
