@@ -22,9 +22,7 @@ function love.load()
     Chessman[2]= {}
     Chessman[1].texture = {}
     Chessman[2].texture = {}
-    Chessman.selected = {2, 2}
-
-    Blbl = {}
+    Chessman.selected = {}
 
     Chessman[1].texture.p = love.graphics.newImage("Textures/Chessman/bp.png")
     Chessman[1].texture.r = love.graphics.newImage("Textures/Chessman/br.png")
@@ -48,29 +46,30 @@ function love.load()
 end
 
 function love.update(dt)
-    Chessman.selected = {2, 2}
-    
-    if love.mouse.isDown(1) and Cursor.selected == true and Cursor.presssed == false and Chessman.selected ~= nil then
-        Cursor2.pos = {love.mouse.getX(), love.mouse.getY()}
-        Cursor2.tile = {math.floor(Cursor2.pos[1] / Tiles.sizeX), math.floor(Cursor2.pos[2] / Tiles.sizeY)}
-        if Cursor.tile[1] == Cursor2.tile[1] and Cursor.tile[2] == Cursor2.tile[2] then
-            Chessman[Chessman.selected[1]].coords[Chessman.selected[2]][2] = Cursor.tile[1]
-            Chessman[Chessman.selected[1]].coords[Chessman.selected[2]][3] = Cursor.tile[2]
-            Cursor.selected = false
-        else
-            Cursor.pos = {love.mouse.getX(), love.mouse.getY()}
-            Cursor.tile = {math.floor(Cursor.pos[1] / Tiles.sizeX), math.floor(Cursor.pos[2] / Tiles.sizeY)}
-        end
-        
-    elseif love.mouse.isDown(1) and Cursor.selected == false and Cursor.presssed == false then
-        Cursor.pos = {love.mouse.getX(), love.mouse.getY()}
-        Cursor.tile = {math.floor(Cursor.pos[1] / Tiles.sizeX), math.floor(Cursor.pos[2] / Tiles.sizeY)}
-        Cursor.selected = true
-    end
+    if love.mouse.isDown(1) and Cursor.presssed == false and (Chessman.selected[1] and Chessman.selected[2]) == nil then
 
-    -- if love.mouse.isDown(2) then
-    --     Chessman.selected = ChessmanSelect(Cursor.tile)
-    -- end
+        Cursor.pos = {love.mouse.getPosition()}
+        Cursor.tile = {math.floor(Cursor.pos[1] / Tiles.sizeX), math.floor(Cursor.pos[2] / Tiles.sizeY)}
+
+        for i = 1, 2, 1 do
+            for j = 1, 16, 1 do
+                if Cursor.tile[1] == Chessman[i].coords[j][2] and Cursor.tile[2] == Chessman[i].coords[j][3] then
+                    Chessman.selected = {i, j}
+                end
+            end
+        end
+                
+    elseif love.mouse.isDown(1) and Cursor.presssed == false then
+
+        Cursor.pos = {love.mouse.getPosition()}
+        Cursor.tile = {math.floor(Cursor.pos[1] / Tiles.sizeX), math.floor(Cursor.pos[2] / Tiles.sizeY)}
+
+        Chessman[Chessman.selected[1]].coords[Chessman.selected[2]][2] = Cursor.tile[1]
+        Chessman[Chessman.selected[1]].coords[Chessman.selected[2]][3] = Cursor.tile[2]
+
+        Chessman.selected = {}
+       
+    end
 
     if love.mouse.isDown(1) then
         Cursor.presssed = true
@@ -113,14 +112,3 @@ function love.draw()
         end
     end
 end
-
--- function ChessmanSelect(pos)
---     for i = 1, 2, 1 do
---         for j = 1, 16, 1 do
---             if Chessman[i].coords[j][2] == pos[1] and Chessman[i].coords[j][3] == pos[2] then
---                 return {Chessman[i].coords[j][2], Chessman[i].coords[j][3]}
---             end
---         end
---     end
---     return nil
--- end
